@@ -10,7 +10,7 @@ module CypressRails
       @connections = gather_connections
       @connections.each do |connection|
         connection.begin_transaction joinable: false, _lazy: false
-        connection.pool.lock_thread = true
+        # connection.pool.lock_thread = true
       end
 
       # When connections are established in the future, begin a transaction too
@@ -26,7 +26,7 @@ module CypressRails
 
           if connection && !@connections.include?(connection)
             connection.begin_transaction joinable: false, _lazy: false
-            connection.pool.lock_thread = true
+            # connection.pool.lock_thread = true
             @connections << connection
           end
         end
@@ -42,7 +42,7 @@ module CypressRails
 
       @connections.each do |connection|
         connection.rollback_transaction if connection.transaction_open?
-        connection.pool.lock_thread = false
+        # connection.pool.lock_thread = false
       end
       @connections.clear
 
